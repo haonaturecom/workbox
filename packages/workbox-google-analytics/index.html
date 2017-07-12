@@ -1,0 +1,53 @@
+
+<button onclick="doGetFetch()">Get Fetch</button>
+
+<button onclick="doPostFetch()">Post Fetch</button>
+
+<button onclick="doBeacon()">Beacon</button>
+
+
+<script>
+  // Register our service worker.
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js');
+  }
+
+  window.doSync = () => {
+
+  }
+
+  window.doGetFetch = () => {
+    fetch('https://www.google-analytics.com/collect', {
+      method: 'POST',
+      body: [
+        `v=1`,
+        `t=pageview`,
+        `cid=123456`,
+        `tid=UA-12345-1`,
+        `cd1=${new Date()}`,
+      ].join('&'),
+    });
+  };
+
+  window.doPostFetch = () => {
+    fetch('https://www.google-analytics.com/collect?' + [
+      `v=1`,
+      `t=pageview`,
+      `cid=123456`,
+      `tid=UA-12345-1`,
+      `cd1=${new Date()}`,
+    ].join('&'));
+  };
+
+  window.doBeacon = () => {
+    navigator.sendBeacon('https://www.google-analytics.com/collect', [
+      `v=1`,
+      `t=pageview`,
+      `cid=123456`,
+      `tid=UA-12345-1`,
+      `cd1=${new Date()}`,
+    ].join('&'));
+  };
+</script>
+
+<script src="https://www.google-analytics.com/analytics.js"></script>

@@ -18,7 +18,6 @@ export default {
   IDB: {
     NAME: 'offline-google-analytics',
     STORE: 'urls',
-    VERSION: 1,
   },
   MAX_ANALYTICS_BATCH_SIZE: 20,
   STOP_RETRYING_AFTER: 1000 * 60 * 60 * 48, // Two days, in milliseconds.

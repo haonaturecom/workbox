@@ -14,9 +14,46 @@
 /* eslint-env mocha, browser */
 /* global chai, MockDate, sinon */
 
+
+import * as googleAnalytics from '../../src/index.js';
+import constants from '../../src/lib/constants.js';
+import {QueuePlugin} from '../../../workbox-background-sync/src/index.js';
+import {Route, Router} from '../../../workbox-routing/src/index.js';
+import {NetworkFirst, NetworkOnly, RequestWrapper}
+    from '../../../workbox-runtime-caching/src/index.js';
+
+
 'use strict';
 
-describe(`replay-queued-requests`, function() {
+
+describe('initialize', () => {
+  it('should register a route to cache the analytics.js script', async () => {
+    sinon.stub(NetworkFirst.prototype, 'handle');
+
+    googleAnalytics.initialize();
+
+    const response = await fetch('https://www.google-analytics.com/analytics.js', {
+      mode: 'no-cors',
+    });
+
+    debugger;
+
+    chai.assert(NetworkFirst.prototype.handle.calledOnce);
+
+    NetworkFirst.prototype.handle.restore();
+  });
+
+  it('should register GET/POST routes for hits', () => {
+
+  });
+
+  // it('should not alter successful hits');
+
+  // it('should add failed hits to a background sync queue');
+});
+
+/*
+describe('replay-queued-requests', () => {
   const constants = workbox.googleAnalytics.test.Constants;
   const enqueueRequest = workbox.googleAnalytics.test.EnqueueRequest;
   const replayRequests =
@@ -131,3 +168,4 @@ describe(`replay-queued-requests`, function() {
       {hitFilter});
   });
 });
+*/
