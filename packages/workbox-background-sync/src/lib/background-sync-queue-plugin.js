@@ -48,6 +48,8 @@ class QueuePlugin extends Queue {
    * the queue.
    */
   fetchDidFail({request}) {
+    debugger;
+    console.log('fetchDidFail', request);
     return this.pushIntoQueue({request});
   }
 }

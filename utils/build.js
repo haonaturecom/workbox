@@ -166,7 +166,7 @@ function generateBuildConfigs({formatToPath, baseDir, moduleName,
     buildConfigs.push({
       rollupConfig: {
         entry: entry || path.join(baseDir, 'src', 'index.js'),
-        plugins: [devReplacePlugin, ...basePlugins, babelPlugin],
+        plugins: [devReplacePlugin, ...basePlugins],
       },
       writeConfig: {
         banner: LICENSE_HEADER,
@@ -182,7 +182,7 @@ function generateBuildConfigs({formatToPath, baseDir, moduleName,
       buildConfigs.push({
         rollupConfig: {
           entry: entry || path.join(baseDir, 'src', 'index.js'),
-          plugins: [prodReplacePlugin, ...basePlugins, babelPlugin],
+          plugins: [prodReplacePlugin, ...basePlugins],
         },
         writeConfig: {
           banner: LICENSE_HEADER,

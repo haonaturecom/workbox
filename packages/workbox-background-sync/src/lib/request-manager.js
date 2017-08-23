@@ -39,12 +39,12 @@ class RequestManager {
    * @private
    */
   attachSyncHandler() {
-    self.addEventListener('sync', (event) => {
-      if (event.tag === tagNamePrefix + this._queue.queueName
-        || event.tag === replayAllQueuesTag) {
-        event.waitUntil(this.replayRequests());
-      }
-    });
+    // self.addEventListener('sync', (event) => {
+    //   if (event.tag === tagNamePrefix + this._queue.queueName
+    //     || event.tag === replayAllQueuesTag) {
+    //     event.waitUntil(this.replayRequests());
+    //   }
+    // });
   }
 
   /**

@@ -69,13 +69,8 @@ import {NetworkFirst, NetworkOnly, RequestWrapper}
  *     for more details.
  * @param {Object} config See workbox.googleAnalytics.initialize.
  */
-const requestWillDequeueCallback = (reqData, config) => {
+const requestWillDequeueCallback = (reqData, config = {}) => {
   const {request} = reqData;
-  request.method = 'POST';
-  request.mode = 'cors';
-  request.credentials = 'omit';
-  request.url = `https://${constants.URL.HOST}${constants.URL.COLLECT_PATH}`;
-
   const hitTime = reqData.metadata.creationTimestamp;
   const queueTime = Date.now() - hitTime;
   const params = request.body ? new URLSearchParams(request.body) :
@@ -96,6 +91,10 @@ const requestWillDequeueCallback = (reqData, config) => {
   }
 
   request.body = params.toString();
+  request.method = 'POST';
+  request.mode = 'cors';
+  request.credentials = 'omit';
+  request.url = `https://${constants.URL.HOST}${constants.URL.COLLECT_PATH}`;
 };
 
 /**
@@ -105,17 +104,26 @@ const requestWillDequeueCallback = (reqData, config) => {
 const createCollectRoutes = () => {
   const bgSyncQueuePlugin = new QueuePlugin({
     dbName: constants.IDB.NAME,
-    queueName: constants.IDB.STORE,
+    // queueName: constants.IDB.STORE,
     maxRetentionTime: constants.STOP_RETRYING_AFTER,
     callbacks: {requestWillDequeue: requestWillDequeueCallback},
   });
 
-  const match = ({url}) => url.hostname == constants.URL.HOST &&
+  const match = ({url}) => {
+    debugger;
+    console.log('match', url)
+    return url.hostname == constants.URL.HOST &&
       url.pathname == constants.URL.COLLECT_PATH;
+  }
 
-  const handler = new NetworkOnly({
-    requestWrapper: new RequestWrapper({plugins: [bgSyncQueuePlugin]}),
-  });
+  // const handler = new NetworkOnly({
+  //   requestWrapper: new RequestWrapper({plugins: [bgSyncQueuePlugin]}),
+  // });
+
+  const handler = function(...args) {
+    debugger;
+    console.log(...args)
+  };
 
   return [
     new Route({method: 'GET', match, handler}),

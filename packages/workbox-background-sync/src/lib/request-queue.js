@@ -52,6 +52,8 @@ class RequestQueue {
    */
   async initQueue() {
     const idbQueue = await this._idbQDb.get(this._queueName);
+
+    console.log('idbQueue', idbQueue);
     if (idbQueue) {
       this._queue.push(...idbQueue);
     }
@@ -64,15 +66,18 @@ class RequestQueue {
    * @private
    */
   async addQueueNameToAllQueues() {
-    if (!this._isQueueNameAddedToAllQueue) {
+    // console.log('_isQueueNameAddedToAllQueue', this._isQueueNameAddedToAllQueue);
+
+    // if (!this._isQueueNameAddedToAllQueue) {
       let allQueues = await this._idbQDb.get(allQueuesPlaceholder);
+      console.log('allQueues', allQueues)
       allQueues = allQueues || [];
       if (!allQueues.includes(this._queueName)) {
         allQueues.push(this._queueName);
       }
       this._idbQDb.put(allQueuesPlaceholder, allQueues);
       this._isQueueNameAddedToAllQueue = true;
-    }
+    // }
   }
 
   /**
@@ -112,6 +117,8 @@ class RequestQueue {
     }
 
     try {
+      console.log('before push', this._queue, hash);
+
       this._queue.push(hash);
 
       // add to queue

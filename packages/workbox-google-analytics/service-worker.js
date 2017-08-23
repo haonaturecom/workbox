@@ -1,11 +1,7 @@
 /* eslint-disable */
 
-import {foo} from './foo.js';
-
-console.log(foo);
-
 self.goog = {DEBUG: true};
-importScripts('./build/importScripts/workbox-google-analytics.dev.v1.0.0.js');
+importScripts('./build/importScripts/workbox-google-analytics.dev.v1.3.0.js');
 
 // First, enable the offline Google Analytics behavior.
 // This will get "first shot" at responding to Google Analytics requests, before

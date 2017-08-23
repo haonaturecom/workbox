@@ -11,21 +11,58 @@
  limitations under the License.
  */
 
-/* eslint-env mocha, browser */
-/* global chai, MockDate, sinon */
-
-
-import * as googleAnalytics from '../../src/index.js';
 import constants from '../../src/lib/constants.js';
-import {QueuePlugin} from '../../../workbox-background-sync/src/index.js';
-import {Route, Router} from '../../../workbox-routing/src/index.js';
-import {NetworkFirst, NetworkOnly, RequestWrapper}
-    from '../../../workbox-runtime-caching/src/index.js';
+
+const STATIC_ASSETS_PATH = '/packages/workbox-google-analytics/test/static';
+const HIT_PAYLOAD = 'v=1&t=pageview&tid=UA-12345-1&cid=1&dp=%2F'
+
+const deleteIndexedDB = () => {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.deleteDatabase(constants.IDB.NAME);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject();
+    req.onblocked = () => {
+      console.error('Database deletion is blocked.');
+      reject();
+    };
+  });
+};
+
+describe(`workbox-precaching Test Revisioned Caching`, function() {
+  // beforeEach(function() {
+  //   return window.goog.swUtils.cleanState().then(deleteIndexedDB);
+  // });
+
+  // after(function() {
+  //   return window.goog.swUtils.cleanState().then(deleteIndexedDB);
+  // });
+
+  it(`should cache and fetch revisioned urls`, function() {
+    return window.goog.swUtils
+        .activateSW(`${STATIC_ASSETS_PATH}/default.js`)
+        .then(async (iframe) => {
+
+      sinon.stub(self, 'fetch').rejects(Response.error());
+
+      try {
+        await fetch(`https://${constants.URL.HOST}` +
+            `${constants.URL.COLLECT_PATH}?${HIT_PAYLOAD}`, {
+              method: 'GET',
+            });
+      } catch(err) {
+        console.error(err);
+      }
+
+      debugger;
+
+      self.fetch.restore();
+    });
+  });
+});
 
 
-'use strict';
 
-
+/*
 describe('initialize', () => {
   it('should register a route to cache the analytics.js script', async () => {
     sinon.stub(NetworkFirst.prototype, 'handle');
@@ -52,7 +89,6 @@ describe('initialize', () => {
   // it('should add failed hits to a background sync queue');
 });
 
-/*
 describe('replay-queued-requests', () => {
   const constants = workbox.googleAnalytics.test.Constants;
   const enqueueRequest = workbox.googleAnalytics.test.EnqueueRequest;

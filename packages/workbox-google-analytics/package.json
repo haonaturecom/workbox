@@ -19,12 +19,13 @@
   "bugs": "https://github.com/googlechrome/workbox/issues",
   "homepage": "https://github.com/GoogleChrome/workbox/tree/master/packages/workbox-google-analytics",
   "devDependencies": {
-    "workbox-background-sync": "^1.1.0",
-    "workbox-routing": "^1.1.0",
-    "workbox-runtime-caching": "^1.1.0"
+    "workbox-background-sync": "^1.3.0",
+    "workbox-routing": "^1.3.0",
+    "workbox-runtime-caching": "^1.3.0"
   },
   "files": [
     "build"
   ],
-  "main": "build/importScripts/workbox-google-analytics.prod.v1.3.0.js"
+  "main": "build/importScripts/workbox-google-analytics.prod.v1.3.0.js",
+  "module": "build/modules/workbox-google-analytics.prod.v1.3.0.mjs"
 }
